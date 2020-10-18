@@ -1,17 +1,26 @@
 import React from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import { useOktaAuth } from '@okta/okta-react';
 
 const Home = () => {
   const { authState, authService } = useOktaAuth();
+  const history = useHistory();
 
-  const login = () => { authService.login('/'); }
-  const logout = () => { authService.logout('/'); }
+  if (authState.isPending) {
+    return <div>Loading...</div>;
+  }
 
-  const userText = authState.isAuthenticated
-    ? <div><p>You are signed in!</p><button onClick={ logout }>Logout</button></div>
-    : <div><p>You need to sign in to use the application!</p><button onClick={ login }>Sign In</button></div>;
+  const button = authState.isAuthenticated ?
+    <button onClick={() => {authService.logout()}}>Logout</button> :
+    <button onClick={() => {history.push('/login')}}>Login</button>;
 
-  return <div className="page-home"><h1>Welcome to My Plants</h1>{ userText }</div>;
-}
+  return (
+    <div>
+      <Link to='/'>Home</Link><br/>
+      <Link to='/search'>Search</Link><br/>
+      {button}
+    </div>
+  );
+};
 
 export default Home;
