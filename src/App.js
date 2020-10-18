@@ -1,27 +1,37 @@
 import React from 'react';
 import './App.css';
-import { Route, Link } from 'react-router-dom';
+import { Route, useHistory } from 'react-router-dom';
 import { LoginCallback, SecureRoute, Security } from '@okta/okta-react';
+import SignIn from './components/SignIn';
 import Home from './components/Home';
 import Search from './components/Search';
 
-const ClientId = process.env.REACT_APP_CLIENT_ID
-const OktaDomain = process.env.REACT_APP_OKTA_DOMAIN
+const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
+const OKTA_DOMAIN = process.env.REACT_APP_OKTA_DOMAIN;
+const LOGIN_PATH = '/login';
+const CALLBACK_PATH = '/login/callback';
+const HOST = window.location.host;
+const REDIRECT_URI = `http://${HOST}${CALLBACK_PATH}`;
+const SCOPES = 'openid profile email';
 
 const App = () => {
+  const history = useHistory();
+  const onAuthRequired = () => {
+    history.push('/login');
+  }
+
   return (
     <div className="App">
-      <header>
-        <div>My Plants</div>
-        <ul className="menu"><li><Link to="/">Home</Link></li><li><Link to="/search">Search</Link></li></ul>
-      </header>
-      <Security issuer={OktaDomain}
-                clientId={ClientId}
-                redirectUri={window.location.origin + '/callback'}
+      <Security issuer={OKTA_DOMAIN}
+                clientId={CLIENT_ID}
+                redirectUri={REDIRECT_URI}
+                scopes={SCOPES.split(/\s+/)}
+                onAuthRequired={onAuthRequired}
                 pkce={true}>
         <Route path='/' exact={true} component={Home}/>
-        <SecureRoute path='/search' exact={true} component={Search}/>
-        <Route path='/callback' component={LoginCallback}/>
+        <SecureRoute path='/search' component={Search}/>
+        <Route path={LOGIN_PATH} render={() => <SignIn baseUrl={OKTA_DOMAIN} />} />
+        <Route path={CALLBACK_PATH} component={LoginCallback} />
       </Security>
     </div>
   );

@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import App from './App';
-import { unmountComponentAtNode } from 'react-dom'
-import { MemoryRouter } from 'react-router-dom'
+import { unmountComponentAtNode } from 'react-dom';
+import { MemoryRouter } from 'react-router-dom';
 
 let container = null;
 beforeEach(() => {
