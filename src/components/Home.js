@@ -16,8 +16,7 @@ const Home = () => {
 
   return (
     <div>
-      <Link to='/'>Home</Link><br/>
-      <Link to='/search'>Search</Link><br/>
+      <Link to='/'>Home</Link>
       {button}
     </div>
   );

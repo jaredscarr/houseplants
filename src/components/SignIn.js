@@ -8,6 +8,8 @@ const SignIn = ({ baseUrl }) => {
 
   const onSuccess = (res) => {
     if (res.status === 'SUCCESS') {
+
+
       return authService.redirect({
         sessionToken: res.session.token
       });
@@ -27,7 +29,7 @@ const SignIn = ({ baseUrl }) => {
   }
   return (
     authState.isAuthenticated ?
-    <Redirect to={{ pathname: '/' }}/> :
+    <Redirect to={{ pathname: '/dashboard' }}/> :
     <OktaSignInWidget
       baseUrl={baseUrl}
       onSuccess={onSuccess}

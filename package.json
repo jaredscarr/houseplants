@@ -13,11 +13,13 @@
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.3"
+    "react-scripts": "^4.0.0"
   },
   "jest": {
     "moduleNameMapper": {
-      "^@okta/okta-auth-js$": "<rootDir>/node_modules/@okta/okta-auth-js/dist/okta-auth-js.min.js"
+      "^@okta/okta-auth-js$": "<rootDir>/node_modules/@okta/okta-auth-js/dist/okta-auth-js.min.js",
+      "^@okta/okta-react$": "<rootDir>/node_modules/@okta/okta-react/dist/withOktaAuth.js",
+      "^@okta/okta-signin-widget$": "<rootDir>/node_modules/@okta/okta-signin-widget/dist/css/okta-sign-in.min.css"
     }
   },
   "scripts": {
@@ -40,5 +42,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "react-test-renderer": "^17.0.1"
   }
 }

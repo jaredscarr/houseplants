@@ -1,7 +1,7 @@
 import React from "react"
 import { render, unmountComponentAtNode } from "react-dom"
 import { act } from "react-dom/test-utils"
-import Search from "./Search"
+import Dashboard from "./Dashboard"
 
 jest.mock('@okta/okta-react', () => ({
     useOktaAuth: () => ({
@@ -31,31 +31,22 @@ afterEach(() => {
   container = null;
 });
 
-it("renders user data", async () => {
-  const fakePlant = {
-    "data": [],
-    "links": {
-      "self": "/api/v1/plants/search?q=cocos",
-      "first": "/api/v1/plants/search?page=1&q=cocos",
-      "last": "/api/v1/plants/search?page=1&q=cocos"
-    },
-    "meta": {
-      "total": 0
-    }
-  }
+it("recieves data from call to gateway", async () => {
+
+  const fakeResponse = [{"id": 1, "user_id": "1", "plant_id": 143638}]
 
   jest.spyOn(global, "fetch").mockImplementation(() =>
     Promise.resolve({
-      json: () => Promise.resolve(fakePlant)
+      json: () => Promise.resolve(fakeResponse)
     })
   );  
 
   // Use the asynchronous version of act to apply resolved promises
   await act(async () => {
-    render(<Search id="123" />, container);
+    render(<Dashboard id="123" />, container);
   });
 
-  expect(container.textContent).toContain(fakePlant.data);
+  expect(container.textContent).toContain("token received.User DashboardWelcome, !143638");
 
   // remove the mock to ensure tests are completely isolated
   global.fetch.mockRestore();

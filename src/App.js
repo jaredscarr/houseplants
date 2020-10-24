@@ -5,6 +5,7 @@ import { LoginCallback, SecureRoute, Security } from '@okta/okta-react';
 import SignIn from './components/SignIn';
 import Home from './components/Home';
 import Search from './components/Search';
+import Dashboard from './components/Dashboard';
 
 const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
 const OKTA_DOMAIN = process.env.REACT_APP_OKTA_DOMAIN;
@@ -13,7 +14,7 @@ const CALLBACK_PATH = '/login/callback';
 const HOST = window.location.host;
 const REDIRECT_URI = `http://${HOST}${CALLBACK_PATH}`;
 const SCOPES = 'openid profile email';
-
+  
 const App = () => {
   const history = useHistory();
   const onAuthRequired = () => {
@@ -28,8 +29,9 @@ const App = () => {
                 scopes={SCOPES.split(/\s+/)}
                 onAuthRequired={onAuthRequired}
                 pkce={true}>
-        <Route path='/' exact={true} component={Home}/>
-        <SecureRoute path='/search' component={Search}/>
+        <Route path='/' exact={true} component={Home} />
+        <SecureRoute path='/dashboard' component={Dashboard} />
+        <SecureRoute path='/search' component={Search} />
         <Route path={LOGIN_PATH} render={() => <SignIn baseUrl={OKTA_DOMAIN} />} />
         <Route path={CALLBACK_PATH} component={LoginCallback} />
       </Security>

@@ -29,5 +29,3 @@ export default class OktaSignInWidget extends Component {
     return <div />;
   }
 };
-
-// features: { registration:true }
