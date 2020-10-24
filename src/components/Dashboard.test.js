@@ -5,10 +5,16 @@ import Dashboard from "./Dashboard"
 
 jest.mock('@okta/okta-react', () => ({
     useOktaAuth: () => ({
-      authState: { isAuthenticated: true},
-      authService: { handleAuthentication: jest.fn(), getUser: jest.fn().mockImplementation(() => Promise.resolve('1')) }
+      authState: {
+        isAuthenticated: true
+      },
+      authService: {
+        handleAuthentication: jest.fn(),
+        getUser: jest.fn().mockImplementation(() => Promise.resolve('1'))
+      }
     })
-  }));
+  })
+);
 
 let container = null;
 

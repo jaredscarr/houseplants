@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-// import { Link } from 'react-router-dom';
 import { useOktaAuth } from '@okta/okta-react';
 import ClaimTrefleToken from './ClaimTrefleToken';
 
 const BASE_URL = process.env.REACT_APP_AWS_GATEWAY_URL;
-const USER_PLANTS_URL = new URL(`${BASE_URL}/users`);
+const USER_PLANTS_URL = new URL(`${BASE_URL}/plants`);
 
 const Dashboard = () => {
   const { authState, authService } = useOktaAuth();

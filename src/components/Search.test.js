@@ -3,7 +3,21 @@ import { render, unmountComponentAtNode } from "react-dom"
 import { act } from "react-dom/test-utils"
 import Search from "./Search"
 
+jest.mock('@okta/okta-react', () => ({
+    useOktaAuth: () => ({
+      authState: {
+        isAuthenticated: true
+      },
+      authService: {
+        handleAuthentication: jest.fn(),
+        getUser: jest.fn().mockImplementation(() => Promise.resolve('1'))
+      }
+    })
+  })
+);
+
 let container = null;
+
 beforeEach(() => {
   // setup a DOM element as a render target
   container = document.createElement("div");
