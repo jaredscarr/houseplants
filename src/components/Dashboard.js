@@ -1,15 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { useOktaAuth } from '@okta/okta-react';
-import ClaimTrefleToken from './ClaimTrefleToken';
+// import ClaimTrefleToken from './ClaimTrefleToken';
 
 const BASE_URL = process.env.REACT_APP_AWS_GATEWAY_URL;
 const USER_PLANTS_URL = new URL(`${BASE_URL}/plants`);
+const CLAIM_JWT_URL = `${BASE_URL}/auth/claim`;
 
 const Dashboard = () => {
   const { authState, authService } = useOktaAuth();
 
   const [userInfo, setUserInfo] = useState(null);
-  const [results, setResults] = useState([])
+  const [results, setResults] = useState([]);
+
+  useEffect(() => {
+    fetch(CLAIM_JWT_URL,
+      {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ origin: 'http://localhost:3000' })
+      }
+    )
+    .then(res => res.json())
+    .then(
+      (result) => {
+        localStorage.setItem('trefleJwtToken', result['token'])
+      },
+      (error) => {
+        console.log(error);
+      }
+    )
+  }, [])
 
   useEffect(() => {
     if (!authState.isAuthenticated) {
@@ -34,7 +54,6 @@ const Dashboard = () => {
 
   return (
     <div>
-      <ClaimTrefleToken />
       <h1>User Dashboard</h1>
       {userInfo &&
         <p>Welcome, {userInfo.name}!</p>

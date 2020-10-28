@@ -7,11 +7,18 @@ const AddPlant = ({ userId, plantId }) => {
   const [plantAdded, setPlantAdded] = useState(false)
 
   const searchPlants = (userId, plantId) => {
-    USER_PLANTS_URL.searchParams.append('userid', userId);
-    USER_PLANTS_URL.searchParams.append('plantid', plantId);
+    // I need to rethink what occurs when a click happens and what shoul dbe rendered
+    // could figure out how to clear the params or simple call a redirect back to itself?
     fetch(USER_PLANTS_URL,
       {
         method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept-Encoding': 'gzip,deflate,br',
+          'Accept': '*/*',
+          'Connection': 'keep-alive'
+        },
+        body: JSON.stringify({ userid: userId, plantid: plantId })
       }
     );
     setPlantAdded(true);

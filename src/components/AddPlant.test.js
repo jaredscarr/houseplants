@@ -19,6 +19,7 @@ afterEach(() => {
 });
 
 it("add plant to database recieves response", async () => {
+  // fix real response
   const fakeResponse = [{"id": 1, "user_id": "1", "plant_id": 143638}]
 
   jest.spyOn(global, "fetch").mockImplementation(() =>

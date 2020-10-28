@@ -42,7 +42,7 @@ const Search = () => {
   const resultList = results.map(plant =>
     <tr key={plant.id}>
       <td>{plant.common_name}</td>
-      <td><AddPlant userId={userInfo.sub} pantId={plant.id} /></td>
+      <td><AddPlant userId={userInfo.sub} plantId={plant.id} /></td>
     </tr>
   );
 
