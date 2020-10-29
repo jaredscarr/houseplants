@@ -4,14 +4,12 @@ const BASE_URL = process.env.REACT_APP_AWS_GATEWAY_URL;
 const USER_PLANTS_URL = new URL(`${BASE_URL}/plants`);
 
 const AddPlant = ({ userId, plantId }) => {
-  const [plantAdded, setPlantAdded] = useState(false)
+  const [plantRemoved, setPlantRemoved] = useState(false)
 
-  const addPlant = (userId, plantId) => {
-    // I need to rethink what occurs when a click happens and what shoul dbe rendered
-    // could figure out how to clear the params or simple call a redirect back to itself?
+  const deletePlant = (userId, plantId) => {
     fetch(USER_PLANTS_URL,
       {
-        method: "POST",
+        method: "DELETE",
         headers: {
           'Content-Type': 'application/json',
           'Accept-Encoding': 'gzip,deflate,br',
@@ -21,12 +19,12 @@ const AddPlant = ({ userId, plantId }) => {
         body: JSON.stringify({ userid: userId, plantid: plantId })
       }
     );
-    setPlantAdded(true);
+    setPlantRemoved(true);
   }
 
   return (
     <div>
-        <button onClick={() => addPlant(userId, plantId)} data-testid="addToggleButton" disabled={plantAdded}>{plantAdded === true ? "Added" : "Add"}</button>
+        <button onClick={() => deletePlant(userId, plantId)} data-testid="removeToggleButton" disabled={plantRemoved}>{plantRemoved === true ? "Removed" : "Remove"}</button>
     </div>
   );
 }
