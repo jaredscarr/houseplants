@@ -19,8 +19,7 @@ afterEach(() => {
 });
 
 it("add plant to database recieves response", async () => {
-  // fix real response
-  const fakeResponse = [{"id": 1, "user_id": "1", "plant_id": 143638}]
+  const fakeResponse = [{"statusCode": 200, "body": "Plant added successfully."}]
 
   jest.spyOn(global, "fetch").mockImplementation(() =>
     Promise.resolve({
@@ -35,7 +34,7 @@ it("add plant to database recieves response", async () => {
   });
 
   // get ahold of the button element, and trigger some clicks on it
-  const button = document.querySelector("[data-testid=toggleButton]");
+  const button = document.querySelector("[data-testid=addToggleButton]");
   expect(button.innerHTML).toBe("Add");
 
   act(() => {

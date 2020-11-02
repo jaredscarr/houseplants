@@ -46,7 +46,7 @@ it("recieves data from call to gateway", async () => {
     render(<Dashboard id="123" />, container);
   });
 
-  expect(container.textContent).toContain("token received.User DashboardWelcome, !143638");
+  expect(container.textContent).toContain("User DashboardWelcome, !143638Remove");
 
   // remove the mock to ensure tests are completely isolated
   global.fetch.mockRestore();

@@ -6,7 +6,7 @@ const USER_PLANTS_URL = new URL(`${BASE_URL}/plants`);
 const AddPlant = ({ userId, plantId }) => {
   const [plantAdded, setPlantAdded] = useState(false)
 
-  const searchPlants = (userId, plantId) => {
+  const addPlant = (userId, plantId) => {
     // I need to rethink what occurs when a click happens and what shoul dbe rendered
     // could figure out how to clear the params or simple call a redirect back to itself?
     fetch(USER_PLANTS_URL,
@@ -26,7 +26,7 @@ const AddPlant = ({ userId, plantId }) => {
 
   return (
     <div>
-        <button onClick={() => searchPlants(userId, plantId)} data-testid="toggleButton" disabled={plantAdded}>{plantAdded === true ? "Added" : "Add"}</button>
+        <button onClick={() => addPlant(userId, plantId)} data-testid="addToggleButton" disabled={plantAdded}>{plantAdded === true ? "Added" : "Add"}</button>
     </div>
   );
 }
