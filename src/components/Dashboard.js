@@ -6,11 +6,31 @@ const BASE_URL = process.env.REACT_APP_AWS_GATEWAY_URL;
 const USER_PLANTS_URL = new URL(`${BASE_URL}/plants`);
 const CLAIM_JWT_URL = `${BASE_URL}/auth/claim`;
 
-const validToken = (token, date) => {
-  console.log('In invalid token', token, date)
-  // if either token is missing return false
-  // if expired or will expire in the next hour return false
-  return true
+const validToken = (token, expDateString) => {
+  console.log('In invalid token', token, expDateString)
+
+  if (!token) {
+    console.log('No token')
+    return false
+  } 
+
+  if (!expDateString) {
+    console.log('No expiration date token')
+    return false
+  } 
+
+  let expDateObj = new Date(expDateString);
+  let nowDateObj = new Date();
+  // just for a buffer suptract 2 hours from now
+  nowDateObj.setHours(nowDateObj.getHours() - 2);
+
+  // if now - 2 hours is greater than the expiration date return false
+  if (nowDateObj > expDateObj) {
+    console.log('Token expired')
+    return false
+  }
+    console.log('All good with tokens')
+    return true
 }
 
 const deletePlant = (userId, plantId) => {
@@ -74,7 +94,6 @@ const Dashboard = () => {
       fetch(USER_PLANTS_URL)
       .then(response => response.json())
       .then(data => setResults(data));
-      console.log('effect ran');
     }
   }, [userInfo]);
 
