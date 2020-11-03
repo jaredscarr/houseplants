@@ -7,15 +7,11 @@ const USER_PLANTS_URL = new URL(`${BASE_URL}/plants`);
 const CLAIM_JWT_URL = `${BASE_URL}/auth/claim`;
 
 const validToken = (token, expDateString) => {
-  console.log('In invalid token', token, expDateString)
-
   if (!token) {
-    console.log('No token')
     return false
   } 
 
   if (!expDateString) {
-    console.log('No expiration date token')
     return false
   } 
 
@@ -26,26 +22,9 @@ const validToken = (token, expDateString) => {
 
   // if now - 2 hours is greater than the expiration date return false
   if (nowDateObj > expDateObj) {
-    console.log('Token expired')
     return false
   }
-    console.log('All good with tokens')
     return true
-}
-
-const deletePlant = (userId, plantId) => {
-  fetch(USER_PLANTS_URL,
-    {
-      method: "DELETE",
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept-Encoding': 'gzip,deflate,br',
-        'Accept': '*/*',
-        'Connection': 'keep-alive'
-      },
-      body: JSON.stringify({ userid: userId, plantid: plantId })
-    }
-  );
 }
 
 const Dashboard = () => {
@@ -90,6 +69,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (userInfo) {
+      USER_PLANTS_URL.searchParams.delete('userid');
       USER_PLANTS_URL.searchParams.append('userid', userInfo.sub);
       fetch(USER_PLANTS_URL)
       .then(response => response.json())
@@ -98,11 +78,21 @@ const Dashboard = () => {
   }, [userInfo]);
 
   const handleRemove = (plant) => {
-    console.log(plant.id);
-    deletePlant(plant.user_id, plant.plant_id)
+    fetch(USER_PLANTS_URL,
+      {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept-Encoding': 'gzip,deflate,br',
+          'Accept': '*/*',
+          'Connection': 'keep-alive'
+        },
+        body: JSON.stringify({ userid: plant.user_id, plantid: plant.plant_id })
+      }
+    );
+
     const newList = results.filter((item) => item.id !== plant.id);
     setResults(newList);
-
   }
 
   return (
@@ -111,7 +101,7 @@ const Dashboard = () => {
       {userInfo &&
         <p>Welcome, {userInfo.name}!</p>
       }
-      <DashboardPlantList list={results} onRemove={handleRemove} />
+      <DashboardPlantList list={results} buttonText="Remove" onHandler={handleRemove} />
     </div>
   );
 }

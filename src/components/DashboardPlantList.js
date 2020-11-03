@@ -1,12 +1,11 @@
 import React from 'react';
-import DeletePlantListItem from './DeletePlantListItem';
+import PlantListItem from './PlantListItem';
 
-const PlantList = ({ list, onRemove }) => {
-  console.log(list);
+const PlantList = ({ list, onHandler, buttonText }) => {
   return (
       <ul>
-      {list.map((plant) => (
-        <DeletePlantListItem key={plant.id} plant={plant} onRemove={onRemove} />
+      {list.map(plant => (
+        <PlantListItem key={plant.id} plant={plant} buttonText={buttonText} onHandler={onHandler} />
       ))}
     </ul>
   );
