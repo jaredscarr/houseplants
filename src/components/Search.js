@@ -72,7 +72,7 @@ const Search = () => {
       </form>
       <h1 className="h1">Search Results</h1>
       <h3>Results</h3>
-      <DashboardPlantList list={results} buttonText="Add" onHandler={handleAddition} />
+      <DashboardPlantList list={results} onHandler={handleAddition} button="Add"/>
     </div>
     :
     <h1>Loading</h1>

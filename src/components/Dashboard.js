@@ -101,7 +101,7 @@ const Dashboard = () => {
       {userInfo &&
         <p>Welcome, {userInfo.name}!</p>
       }
-      <DashboardPlantList list={results} buttonText="Remove" onHandler={handleRemove} />
+      <DashboardPlantList list={results} onHandler={handleRemove} button="Remove" />
     </div>
   );
 }

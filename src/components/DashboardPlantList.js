@@ -1,11 +1,11 @@
 import React from 'react';
 import PlantListItem from './PlantListItem';
 
-const PlantList = ({ list, onHandler, buttonText }) => {
+const PlantList = ({ list, onHandler, button=false }) => {
   return (
       <ul>
       {list.map(plant => (
-        <PlantListItem key={plant.id} plant={plant} buttonText={buttonText} onHandler={onHandler} />
+        <PlantListItem key={plant.id} plant={plant} button={button} onHandler={onHandler} />
       ))}
     </ul>
   );
