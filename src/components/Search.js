@@ -27,12 +27,12 @@ const Search = () => {
   
   const handleSearch = (event) => {
     event.preventDefault();
-    const url = new URL(TREFLE_BASE_URL + 'plants/search' );
+    const url = new URL(`${TREFLE_BASE_URL}/plants/search`);
     const token = localStorage.getItem('trefleJwtToken');
     // clearn any parameters from previous request
     url.searchParams.delete('q');
     url.searchParams.append('q', searchQuery);
-    console.log(url);
+
     fetch(url,
       {
         method: "GET",
@@ -43,7 +43,6 @@ const Search = () => {
     )
     .then(response => response.json())
     .then(response => setResults(response.data));
-    console.log(results);
   };
 
   const handleAddition = (plant) => {
@@ -72,7 +71,7 @@ const Search = () => {
       </form>
       <h1 className="h1">Search Results</h1>
       <h3>Results</h3>
-      <DashboardPlantList list={results} buttonText="Add" onHandler={handleAddition} />
+      <DashboardPlantList list={results} onHandler={handleAddition} button="Add"/>
     </div>
     :
     <h1>Loading</h1>

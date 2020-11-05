@@ -5,6 +5,7 @@ import DashboardPlantList from './DashboardPlantList';
 const BASE_URL = process.env.REACT_APP_AWS_GATEWAY_URL;
 const USER_PLANTS_URL = new URL(`${BASE_URL}/plants`);
 const CLAIM_JWT_URL = `${BASE_URL}/auth/claim`;
+const TREFLE_API_BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const validToken = (token, expDateString) => {
   if (!token) {
@@ -31,7 +32,10 @@ const Dashboard = () => {
   const { authState, authService } = useOktaAuth();
 
   const [userInfo, setUserInfo] = useState(null);
-  const [results, setResults] = useState([]);
+  // stored plant id's from database
+  const [userPlants, setUserPlants] = useState([]);
+  // plants from the API
+  const [plantData, setPlantData] = useState([]);
   const [trefleToken, setTrefleToken] = useState(localStorage.getItem('trefleJwtToken'))
   const [trefleExpiration, setExpiration] = useState(localStorage.getItem('trefleExpiration'))
 
@@ -73,26 +77,53 @@ const Dashboard = () => {
       USER_PLANTS_URL.searchParams.append('userid', userInfo.sub);
       fetch(USER_PLANTS_URL)
       .then(response => response.json())
-      .then(data => setResults(data));
+      .then(
+        (result) => {
+          setUserPlants(result);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     }
   }, [userInfo]);
 
+  useEffect(() => {
+    if (userPlants) {
+      const fetch_promises = userPlants.map(plant => {
+        return fetch(`${TREFLE_API_BASE_URL}/plants/${plant.plant_id}`,
+            {
+              method: "GET",
+              headers: {
+                "Authorization": `Bearer ${trefleToken}`
+              }
+            }
+          ).then(response => response.json());
+      });
+
+      Promise.all(fetch_promises).then(results => setPlantData(results));
+    }
+  }, [userPlants]);
+
   const handleRemove = (plant) => {
+
     fetch(USER_PLANTS_URL,
       {
-        method: "POST",
+        method: "DELETE",
         headers: {
           'Content-Type': 'application/json',
           'Accept-Encoding': 'gzip,deflate,br',
           'Accept': '*/*',
           'Connection': 'keep-alive'
         },
-        body: JSON.stringify({ userid: plant.user_id, plantid: plant.plant_id })
+        body: JSON.stringify({ userid: userInfo.sub, plantid: plant.data.main_species_id })
       }
     );
-
-    const newList = results.filter((item) => item.id !== plant.id);
-    setResults(newList);
+    
+    const newUserPlantList = userPlants.filter((item) => item.plant_id !== plant.data.main_species_id);
+    setUserPlants(newUserPlantList);
+    const newPlantData = plantData.filter((item) => item.data.main_species_id !== plant.data.main_species_id);
+    setPlantData(newPlantData);
   }
 
   return (
@@ -101,7 +132,7 @@ const Dashboard = () => {
       {userInfo &&
         <p>Welcome, {userInfo.name}!</p>
       }
-      <DashboardPlantList list={results} buttonText="Remove" onHandler={handleRemove} />
+      <DashboardPlantList list={plantData} onHandler={handleRemove} button="Remove" />
     </div>
   );
 }

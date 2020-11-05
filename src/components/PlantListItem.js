@@ -1,13 +1,24 @@
 import React from 'react';
 
-const PlantListItem = ({ plant, buttonText, onHandler }) => {
+const PlantListItem = ({ plant, onHandler, button }) => {
+  const main_species = plant.data ? plant.data.main_species : plant;
+  
+  if (button) {
+    return (main_species.common_name ? 
+      <li>
+        {main_species.common_name}
+        <button type="button" onClick={() => onHandler(plant)}>
+          {button}
+        </button>
+      </li>
+      :
+      null
+    );
+  }
 
   return (
-    <li key={plant.id}>
-      {plant.id}
-      <button type="button" onClick={() => onHandler(plant)}>
-        {buttonText}
-      </button>
+    <li onClick={() => onHandler(plant)}>
+      {main_species.common_name}
     </li>
   );
 }
