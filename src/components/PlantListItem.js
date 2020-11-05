@@ -1,11 +1,12 @@
 import React from 'react';
 
 const PlantListItem = ({ plant, onHandler, button }) => {
-
+  const main_species = plant.data ? plant.data.main_species : plant;
+  
   if (button) {
-    return (plant.common_name ? 
-      <li key={plant.id}>
-        {plant.common_name}
+    return (main_species.common_name ? 
+      <li>
+        {main_species.common_name}
         <button type="button" onClick={() => onHandler(plant)}>
           {button}
         </button>
@@ -16,8 +17,8 @@ const PlantListItem = ({ plant, onHandler, button }) => {
   }
 
   return (
-    <li key={plant.id} onClick={() => onHandler(plant)}>
-      {plant.id}
+    <li onClick={() => onHandler(plant)}>
+      {main_species.common_name}
     </li>
   );
 }
