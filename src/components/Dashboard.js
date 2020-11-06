@@ -48,7 +48,7 @@ const Dashboard = () => {
         {
           method: "POST",
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ origin: 'http://localhost:3000' })
+          body: JSON.stringify({ origin: window.location.origin })
         }
       )
       .then(res => res.json())
