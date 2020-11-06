@@ -12,8 +12,8 @@ const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
 const OKTA_DOMAIN = process.env.REACT_APP_OKTA_DOMAIN;
 const LOGIN_PATH = '/login';
 const CALLBACK_PATH = '/login/callback';
-const HOST = window.location.host;
-const REDIRECT_URI = `http://${HOST}${CALLBACK_PATH}`;
+const HOST = window.location.origin;
+const REDIRECT_URI = `${HOST}${CALLBACK_PATH}`;
 const SCOPES = 'openid profile email';
   
 const App = () => {
