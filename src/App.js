@@ -6,6 +6,7 @@ import SignIn from './components/SignIn';
 import Home from './components/Home';
 import Search from './components/Search';
 import Dashboard from './components/Dashboard';
+import PlantDetail from './components/PlantDetail';
 
 const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
 const OKTA_DOMAIN = process.env.REACT_APP_OKTA_DOMAIN;
@@ -32,6 +33,7 @@ const App = () => {
         <Route path='/' exact={true} component={Home} />
         <SecureRoute path='/dashboard' component={Dashboard} />
         <SecureRoute path='/search' component={Search} />
+        <SecureRoute path='/plant' component={PlantDetail} />
         <Route path={LOGIN_PATH} render={() => <SignIn baseUrl={OKTA_DOMAIN} />} />
         <Route path={CALLBACK_PATH} component={LoginCallback} />
       </Security>

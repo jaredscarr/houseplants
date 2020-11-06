@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useOktaAuth } from '@okta/okta-react';
-import DashboardPlantList from './DashboardPlantList';
+import PlantList from './PlantList';
 
 const BASE_URL = process.env.REACT_APP_AWS_GATEWAY_URL;
 const USER_PLANTS_URL = new URL(`${BASE_URL}/plants`);
@@ -105,34 +105,13 @@ const Dashboard = () => {
     }
   }, [userPlants]);
 
-  const handleRemove = (plant) => {
-
-    fetch(USER_PLANTS_URL,
-      {
-        method: "DELETE",
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept-Encoding': 'gzip,deflate,br',
-          'Accept': '*/*',
-          'Connection': 'keep-alive'
-        },
-        body: JSON.stringify({ userid: userInfo.sub, plantid: plant.data.main_species_id })
-      }
-    );
-    
-    const newUserPlantList = userPlants.filter((item) => item.plant_id !== plant.data.main_species_id);
-    setUserPlants(newUserPlantList);
-    const newPlantData = plantData.filter((item) => item.data.main_species_id !== plant.data.main_species_id);
-    setPlantData(newPlantData);
-  }
-
   return (
     <div>
       <h1>User Dashboard</h1>
       {userInfo &&
         <p>Welcome, {userInfo.name}!</p>
       }
-      <DashboardPlantList list={plantData} onHandler={handleRemove} button="Remove" />
+      <PlantList list={plantData} button="Remove" />
     </div>
   );
 }
