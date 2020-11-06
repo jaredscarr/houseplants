@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useOktaAuth } from '@okta/okta-react';
+import { useHistory } from 'react-router-dom';
 import PlantList from './PlantList';
 
 const BASE_URL = process.env.REACT_APP_AWS_GATEWAY_URL;
@@ -30,14 +31,16 @@ const validToken = (token, expDateString) => {
 
 const Dashboard = () => {
   const { authState, authService } = useOktaAuth();
+  const history = useHistory();
 
   const [userInfo, setUserInfo] = useState(null);
   // stored plant id's from database
   const [userPlants, setUserPlants] = useState([]);
   // plants from the API
   const [plantData, setPlantData] = useState([]);
-  const [trefleToken, setTrefleToken] = useState(localStorage.getItem('trefleJwtToken'))
-  const [trefleExpiration, setExpiration] = useState(localStorage.getItem('trefleExpiration'))
+  const [trefleToken, setTrefleToken] = useState(localStorage.getItem('trefleJwtToken'));
+  const [trefleExpiration, setExpiration] = useState(localStorage.getItem('trefleExpiration'));
+
 
   useEffect(() => {
     if (!validToken(trefleToken, trefleExpiration)) {
@@ -111,6 +114,7 @@ const Dashboard = () => {
       {userInfo &&
         <p>Welcome, {userInfo.name}!</p>
       }
+      <button onClick={()=> history.push("/search")}>Add Plant</button>
       <PlantList list={plantData} button="Remove" />
     </div>
   );
