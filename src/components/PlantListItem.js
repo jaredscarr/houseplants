@@ -1,25 +1,25 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-const PlantListItem = ({ plant, onHandler, button }) => {
+const PlantListItem = ({ plant, button }) => {
   const main_species = plant.data ? plant.data.main_species : plant;
-  
-  if (button) {
-    return (main_species.common_name ? 
-      <li>
-        {main_species.common_name}
-        <button type="button" onClick={() => onHandler(plant)}>
-          {button}
-        </button>
-      </li>
-      :
-      null
-    );
-  }
 
-  return (
-    <li onClick={() => onHandler(plant)}>
-      {main_species.common_name}
+  return (main_species.common_name ? 
+    <li>
+      <Link to={
+        {
+          pathname: "/plant",
+          state: {
+            plant: main_species,
+            button: button,
+          }
+        }
+      }>
+        {main_species.common_name}
+      </Link>
     </li>
+    :
+    null
   );
 }
 export default PlantListItem;

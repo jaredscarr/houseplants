@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useOktaAuth } from '@okta/okta-react';
-import DashboardPlantList from './DashboardPlantList';
+import PlantList from './PlantList';
 
 const TREFLE_BASE_URL = process.env.REACT_APP_BASE_URL
-const BASE_URL = process.env.REACT_APP_AWS_GATEWAY_URL;
-const USER_PLANTS_URL = new URL(`${BASE_URL}/plants`);
 
 const Search = () => {
   const { authState, authService } = useOktaAuth();
@@ -45,24 +43,6 @@ const Search = () => {
     .then(response => setResults(response.data));
   };
 
-  const handleAddition = (plant) => {
-    fetch(USER_PLANTS_URL,
-      {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept-Encoding': 'gzip,deflate,br',
-          'Accept': '*/*',
-          'Connection': 'keep-alive'
-        },
-        body: JSON.stringify({ userid: userInfo.sub, plantid: plant.id })
-      }
-    );
-
-    const newList = results.filter((item) => item.id !== plant.id);
-    setResults(newList);
-  }
-
   return userInfo ?
     <div>
       <form onSubmit={handleSearch}>
@@ -71,7 +51,7 @@ const Search = () => {
       </form>
       <h1 className="h1">Search Results</h1>
       <h3>Results</h3>
-      <DashboardPlantList list={results} onHandler={handleAddition} button="Add"/>
+      <PlantList list={results} button="Add"/>
     </div>
     :
     <h1>Loading</h1>
