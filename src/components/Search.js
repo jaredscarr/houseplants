@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useOktaAuth } from '@okta/okta-react';
+import { useHistory } from 'react-router-dom';
 import PlantList from './PlantList';
 
 const TREFLE_BASE_URL = process.env.REACT_APP_BASE_URL
 
 const Search = () => {
   const { authState, authService } = useOktaAuth();
+  const history = useHistory();
 
   const [results, setResults] = useState([]);
   const [userInfo, setUserInfo] = useState(null);
@@ -45,6 +47,7 @@ const Search = () => {
 
   return userInfo ?
     <div>
+      <button onClick={() => history.push("/dashboard")}>Dashboard</button>
       <form onSubmit={handleSearch}>
         <input type="text" value={searchQuery} onChange={handleChange} placeholder="Search" />
         <input type="submit" value="Submit" onClick={handleSearch} />
