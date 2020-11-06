@@ -41,7 +41,6 @@ const Dashboard = () => {
   const [trefleToken, setTrefleToken] = useState(localStorage.getItem('trefleJwtToken'));
   const [trefleExpiration, setExpiration] = useState(localStorage.getItem('trefleExpiration'));
 
-
   useEffect(() => {
     if (!validToken(trefleToken, trefleExpiration)) {
       fetch(CLAIM_JWT_URL,
@@ -107,6 +106,10 @@ const Dashboard = () => {
       Promise.all(fetch_promises).then(results => setPlantData(results));
     }
   }, [userPlants]);
+
+  if (authState.isPending) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
