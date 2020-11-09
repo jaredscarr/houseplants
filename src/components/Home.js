@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useOktaAuth } from '@okta/okta-react';
 
 const Home = () => {
@@ -16,7 +16,7 @@ const Home = () => {
 
   return (
     <div>
-      <Link to='/'>Home</Link>
+      
       {button}
     </div>
   );

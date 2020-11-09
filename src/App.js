@@ -10,21 +10,20 @@ import PlantDetail from './components/PlantDetail';
 
 const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
 const OKTA_DOMAIN = process.env.REACT_APP_OKTA_DOMAIN;
-const LOGIN_PATH = '/login';
-const CALLBACK_PATH = '/login/callback';
 const HOST = window.location.origin;
-const REDIRECT_URI = `${HOST}${CALLBACK_PATH}`;
+const REDIRECT_URI = `${HOST}/login/callback`;
 const SCOPES = 'openid profile email';
   
 const App = () => {
   const history = useHistory();
+
   const onAuthRequired = () => {
     history.push('/login');
   }
 
   return (
     <div className="App">
-      <Security issuer={OKTA_DOMAIN}
+      <Security issuer={`${OKTA_DOMAIN}/oauth2/default`}
                 clientId={CLIENT_ID}
                 redirectUri={REDIRECT_URI}
                 scopes={SCOPES.split(/\s+/)}
@@ -34,8 +33,8 @@ const App = () => {
         <SecureRoute path='/dashboard' component={Dashboard} />
         <SecureRoute path='/search' component={Search} />
         <SecureRoute path='/plant' component={PlantDetail} />
-        <Route path={LOGIN_PATH} render={() => <SignIn baseUrl={OKTA_DOMAIN} />} />
-        <Route path={CALLBACK_PATH} component={LoginCallback} />
+        <Route path='/login' component={SignIn} />
+        <Route path='/login/callback' component={LoginCallback} />
       </Security>
     </div>
   );
