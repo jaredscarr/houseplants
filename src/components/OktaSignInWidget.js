@@ -7,7 +7,6 @@ const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
 const OKTA_DOMAIN = process.env.REACT_APP_OKTA_DOMAIN;
 const HOST = window.location.origin;
 const REDIRECT_URI = `${HOST}/login/callback`;
-console.log(REDIRECT_URI);
 const SCOPES = ['openid', 'profile', 'email'];
 
 const Login = () => {
@@ -43,14 +42,12 @@ const Login = () => {
       { el: '#sign-in-widget' },
       ({ tokens }) => {
         // Add tokens to storage
-        console.log('HEREREER')
         const tokenManager = authService.getTokenManager();
         tokenManager.add('idToken', tokens.idToken);
         tokenManager.add('accessToken', tokens.accessToken);
 
         // Return to the original URL (if auth was initiated from a secure route), falls back to the origin
         const fromUri = authService.getFromUri();
-        console.log(fromUri);
         window.location.assign(fromUri);
       },
       (err) => {
