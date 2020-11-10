@@ -1,5 +1,6 @@
 import React from 'react';
 import { useOktaAuth } from '@okta/okta-react';
+import NavBar from './NavBar';
 import Dashboard from './Dashboard';
 
 const Home = () => {
@@ -11,6 +12,7 @@ const Home = () => {
 
   return (
     <div>
+      <NavBar />
       { authState.isAuthenticated && 
         <Dashboard />
       }
