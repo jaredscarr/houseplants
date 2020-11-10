@@ -41,7 +41,14 @@ const Dashboard = () => {
   const [trefleToken, setTrefleToken] = useState(localStorage.getItem('trefleJwtToken'));
   const [trefleExpiration, setExpiration] = useState(localStorage.getItem('trefleExpiration'));
 
-
+  useEffect(() => {
+    if (!authState.isAuthenticated) {
+      setUserInfo(null);
+    } else {
+      authService.getUser().then(info => setUserInfo(info))
+    }
+  }, [authService, authState]);
+  
   useEffect(() => {
     if (!validToken(trefleToken, trefleExpiration)) {
       fetch(CLAIM_JWT_URL,
@@ -65,14 +72,6 @@ const Dashboard = () => {
       )
     }
   }, []);
-
-  useEffect(() => {
-    if (!authState.isAuthenticated) {
-      setUserInfo(null);
-    } else {
-      authService.getUser().then(info => setUserInfo(info))
-    }
-  }, [authService, authState]);
 
   useEffect(() => {
     if (userInfo) {
