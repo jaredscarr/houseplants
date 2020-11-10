@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import { Route, useHistory } from 'react-router-dom';
 import { LoginCallback, SecureRoute, Security } from '@okta/okta-react';
+import NavBar from './components/NavBar';
 import Login from './components/OktaSignInWidget';
 import Home from './components/Home';
 import Search from './components/Search';
@@ -31,6 +32,7 @@ const App = () => {
                 onAuthRequired={onAuthRequired}
                 pkce={true}
                 disableHttpsCheck={OKTA_TESTING_DISABLEHTTPSCHECK}>
+        <NavBar />
         <Route path='/' exact component={Home} />
         <Route path='/login' component={Login} />
         <Route path='/login/callback' component={LoginCallback} />

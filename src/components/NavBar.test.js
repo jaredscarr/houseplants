@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import Dashboard from './Dashboard';
+import NavBar from './NavBar';
 
 jest.mock('@okta/okta-react', () => ({
     useOktaAuth: () => ({
@@ -31,23 +31,13 @@ afterEach(() => {
   container = null;
 });
 
-it("recieves data from call to gateway", async () => {
-
-  const fakeResponse = [{"id": 1, "user_id": "1", "plant_id": 143638}]
-
-  jest.spyOn(global, "fetch").mockImplementation(() =>
-    Promise.resolve({
-      json: () => Promise.resolve(fakeResponse)
-    })
-  );  
+it("Shows logout button if authenticated", async () => {
 
   // Use the asynchronous version of act to apply resolved promises
   await act(async () => {
-    render(<Dashboard id="123" />, container);
+    render(<NavBar id="123" />, container);
   });
 
-  expect(container.textContent).toContain("User DashboardWelcome, !Add Plant");
+  expect(container.textContent).toContain("Logout");
 
-  // remove the mock to ensure tests are completely isolated
-  global.fetch.mockRestore();
 });
