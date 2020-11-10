@@ -1,6 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useOktaAuth } from '@okta/okta-react';
+import Dashboard from './Dashboard';
 
 const Home = () => {
   const { authState, authService } = useOktaAuth();
@@ -16,8 +17,10 @@ const Home = () => {
 
   return (
     <div>
-      
       {button}
+      { authState.isAuthenticated && 
+        <Dashboard />
+      }
     </div>
   );
 };
