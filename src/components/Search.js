@@ -1,18 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import { useOktaAuth } from '@okta/okta-react';
-import { useHistory } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 import NavBar from './NavBar';
 import PlantList from './PlantList';
 
 const TREFLE_BASE_URL = process.env.REACT_APP_BASE_URL
 
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+}));
+
 const Search = () => {
   const { authState, authService } = useOktaAuth();
-  const history = useHistory();
-
   const [results, setResults] = useState([]);
   const [userInfo, setUserInfo] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const classes = useStyles();
 
   useEffect(() => {
     if (!authState.isAuthenticated) {
@@ -49,14 +71,33 @@ const Search = () => {
   return userInfo ?
     <div>
       <NavBar />
-      <button onClick={() => history.push("/dashboard")}>Dashboard</button>
-      <form onSubmit={handleSearch}>
-        <input type="text" value={searchQuery} onChange={handleChange} placeholder="Search" />
-        <input type="submit" value="Submit" onClick={handleSearch} />
-      </form>
-      <h1 className="h1">Search Results</h1>
-      <h3>Results</h3>
-      <PlantList list={results} button="Add"/>
+        <div className={classes.paper}>
+          <form onSubmit={handleSearch}>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              name="search"
+              label="Search"
+              id="search"
+              value={searchQuery}
+              onChange={handleChange}
+              placeholder="Search"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={handleSearch}
+              value="Submit"
+            >
+            Search
+            </Button>
+          </form>
+        <PlantList list={results} button="Add"/>
+      </div>
     </div>
     :
     <h1>Loading</h1>
