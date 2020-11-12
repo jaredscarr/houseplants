@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useOktaAuth } from '@okta/okta-react';
 import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import NavBar from './NavBar';
@@ -73,28 +73,36 @@ const Search = () => {
       <NavBar />
         <div className={classes.paper}>
           <form onSubmit={handleSearch}>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              fullWidth
-              name="search"
-              label="Search"
-              id="search"
-              value={searchQuery}
-              onChange={handleChange}
-              placeholder="Search"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-              onClick={handleSearch}
-              value="Submit"
-            >
-            Search
-            </Button>
+            <div className={classes.heroButtons}>
+              <Grid container spacing={2} justify="center">
+                <Grid item>
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
+                    name="search"
+                    label="Search"
+                    id="search"
+                    value={searchQuery}
+                    onChange={handleChange}
+                    placeholder="Search"
+                  />
+                </Grid>
+                <Grid item>
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
+                    onClick={handleSearch}
+                    value="Submit"
+                  >
+                  Search
+                  </Button>
+                </Grid>
+              </Grid>
+            </div>
           </form>
         <PlantList list={results} button="Add"/>
       </div>

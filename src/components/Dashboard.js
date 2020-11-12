@@ -32,7 +32,6 @@ const validToken = (token, expDateString) => {
 
   let expDateObj = new Date(expDateString);
   let nowDateObj = new Date();
-  console.log(expDateObj.toUTCString(), nowDateObj.toUTCString())
   
   if (nowDateObj > expDateObj) {
     return false
