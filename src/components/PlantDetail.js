@@ -1,15 +1,48 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useOktaAuth } from '@okta/okta-react';
+import { makeStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Button from '@material-ui/core/Button';
+import NavBar from './NavBar';
 
 const BASE_URL = process.env.REACT_APP_AWS_GATEWAY_URL;
 const USER_PLANTS_URL = new URL(`${BASE_URL}/plants`);
 
-const PlantDetail = (props) => {
-  const { plant, button } = props.location.state;
-  const { authState, authService } = useOktaAuth();
-  const history = useHistory();
+const useStyles = makeStyles((theme) => ({
+  root: {
+    height: '100vh',
+  },
+  image: {
+    backgroundImage: 'url(https://source.unsplash.com/random)',
+    backgroundRepeat: 'no-repeat',
+    backgroundColor:
+      theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+  },
+  paper: {
+    margin: theme.spacing(8, 4),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'left',
+    justify: 'flex-start',
+  },
+  buttons: {
+    marginTop: theme.spacing(4),
+  },
+}));
 
+const PlantDetail = (props) => {
+  const history = useHistory();
+  const { authState, authService } = useOktaAuth();
+  const classes = useStyles();
+
+  const { plant, button } = props.location.state;
   const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
@@ -56,23 +89,50 @@ const PlantDetail = (props) => {
 
   const ActionButton = (button) => {
     return (button.button === 'Remove' ?
-      <button onClick={() => handleRemove(plant)}>Remove</button> :
-      <button onClick={() => handleAddition(plant)}>Add</button>
+      <Button variant="contained" onClick={() => handleRemove(plant)}>Remove</Button> :
+      <Button variant="contained" onClick={() => handleAddition(plant)}>Add</Button>
     );
   }
   
   return (
-    <div className="PlantDetail">
-      <ul>
-        <li>{plant.common_name}</li>
-        <li>{plant.genus}</li>
-        <li>{plant.scientific_name}</li>
-        <li>{plant.observations}</li>
-      </ul>
-      <img src={plant.image_url} alt={plant.common_name} />
-      {button &&
-        <ActionButton button={button} />
-      }
+    <div className="plantDetail">
+      <NavBar />
+      <Grid container component="main" className={classes.root}>
+        <Grid item xs={false} sm={4} md={7} className={classes.image} style={{ backgroundImage: `url(${plant.image_url})` }}/>
+        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+          <div className={classes.paper}>
+            <List>
+              <ListItem>
+                <ListItemText
+                  primary="Common Name"
+                  secondary={plant.common_name}
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemText
+                  primary="Genus"
+                  secondary={plant.genus}
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemText
+                  primary="Scientific Name"
+                  secondary={plant.scientific_name}
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemText
+                  primary="Notes"
+                  secondary={plant.observations}
+                />
+              </ListItem>
+            </List>
+            <Grid container justify="flex-end" className={classes.buttons} >
+              <ActionButton button={button} />
+            </Grid>
+          </div>
+        </Grid>
+      </Grid>
     </div>
   );
 }
