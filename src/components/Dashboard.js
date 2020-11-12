@@ -1,12 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { useOktaAuth } from '@okta/okta-react';
 import { useHistory } from 'react-router-dom';
-import PlantList from './PlantList';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import Button from '@material-ui/core/Button';
+import AddBoxIcon from '@material-ui/icons/AddBox';
+import Typography from '@material-ui/core/Typography';
+import NavBar from  './NavBar';
+import DashboardPlants from './DashboardPlants';
 
 const BASE_URL = process.env.REACT_APP_AWS_GATEWAY_URL;
 const USER_PLANTS_URL = new URL(`${BASE_URL}/plants`);
 const CLAIM_JWT_URL = `${BASE_URL}/auth/claim`;
 const TREFLE_API_BASE_URL = process.env.REACT_APP_BASE_URL;
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    color: theme.palette.text.primary,
+    alignItems: 'right',
+  },
+}));
 
 const validToken = (token, expDateString) => {
   if (!token) {
@@ -19,10 +32,8 @@ const validToken = (token, expDateString) => {
 
   let expDateObj = new Date(expDateString);
   let nowDateObj = new Date();
-  // just for a buffer suptract 2 hours from now
-  nowDateObj.setHours(nowDateObj.getHours() - 2);
-
-  // if now - 2 hours is greater than the expiration date return false
+  console.log(expDateObj.toUTCString(), nowDateObj.toUTCString())
+  
   if (nowDateObj > expDateObj) {
     return false
   }
@@ -32,6 +43,7 @@ const validToken = (token, expDateString) => {
 const Dashboard = () => {
   const { authState, authService } = useOktaAuth();
   const history = useHistory();
+  const classes = useStyles();
 
   const [userInfo, setUserInfo] = useState(null);
   // stored plant id's from database
@@ -61,10 +73,13 @@ const Dashboard = () => {
       .then(res => res.json())
       .then(
         (result) => {
+          const now = new Date()
+          now.setHours(now.getHours() + 12)
+          const expirationString = now.toString();
           localStorage.setItem('trefleJwtToken', result['token'])
-          localStorage.setItem('trefleExpiration', result['expiration'])
+          localStorage.setItem('trefleExpiration', expirationString)
           setTrefleToken(result['token'])
-          setExpiration(result['expiration'])
+          setExpiration(expirationString)
         },
         (error) => {
           console.log(error);
@@ -106,15 +121,23 @@ const Dashboard = () => {
       Promise.all(fetch_promises).then(results => setPlantData(results));
     }
   }, [userPlants]);
+  // Plus icon text align right to replace standard add plant button
 
   return (
     <div>
-      <h1>User Dashboard</h1>
-      {userInfo &&
-        <p>Welcome, {userInfo.name}!</p>
-      }
-      <button onClick={()=> history.push("/search")}>Add Plant</button>
-      <PlantList list={plantData} button="Remove" />
+      <NavBar />
+      <Container maxWidth="sm" className={classes.root}>
+        {userInfo &&
+          <Typography variant="caption">Welcome, {userInfo.name}!</Typography>
+        }
+        <Button
+          className={classes.button}
+          onClick={()=> history.push("/search")}
+        >
+          <AddBoxIcon color="inherit" />
+        </Button>
+      </Container>
+      <DashboardPlants plants={plantData} />
     </div>
   );
 }
