@@ -1,15 +1,12 @@
 import React from 'react';
 import { Route, useHistory } from 'react-router-dom';
 import { LoginCallback, SecureRoute, Security } from '@okta/okta-react';
-import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-import Link from '@material-ui/core/Link';
 import Login from './components/OktaSignInWidget';
 import Home from './components/Home';
 import Search from './components/Search';
 import Dashboard from './components/Dashboard';
 import PlantDetail from './components/PlantDetail';
+import Footer from './components/Footer';
 
 const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
 const OKTA_DOMAIN = process.env.REACT_APP_OKTA_DOMAIN;
@@ -17,19 +14,6 @@ const HOST = window.location.origin;
 const REDIRECT_URI = `${HOST}/login/callback`;
 const SCOPES = ['openid', 'profile', 'email'];
 const OKTA_TESTING_DISABLEHTTPSCHECK = process.env.REACT_APP_OKTA_TESTING_DISABLEHTTPSCHECK || false;
-
-const Copyright = () => {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://jaredscarr.com">
-        jaredscarr.com
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
   
 const App = () => {
   const history = useHistory();
@@ -53,11 +37,7 @@ const App = () => {
         <SecureRoute path='/dashboard' component={Dashboard} />
         <SecureRoute path='/search' component={Search} />
         <SecureRoute path='/plant' component={PlantDetail} />
-        <Container maxWidth="sm">
-          <Box my={4}>
-            <Copyright />
-          </Box>
-        </Container>   
+        <Footer />  
       </Security>
     </div>
   );
