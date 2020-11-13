@@ -68,7 +68,7 @@ const PlantDetail = (props) => {
         body: JSON.stringify({ userid: userInfo.sub, plantid: plant.id })
       }
     );
-    history.push('/search');
+    history.push('/dashboard');
   }
 
   const handleRemove = (plant) => {
