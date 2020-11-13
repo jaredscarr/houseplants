@@ -4,8 +4,8 @@ import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
-
 import NavBar from './NavBar';
+import Spinner from './Spinner';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -23,7 +23,7 @@ const Home = () => {
   const classes = useStyles();
 
   if (authState.isPending) {
-    return <div>Loading...</div>;
+    return <Spinner />;
   }
 
   if (authState.isAuthenticated) {
