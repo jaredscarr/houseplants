@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useOktaAuth } from '@okta/okta-react';
-import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
-import AddBoxIcon from '@material-ui/icons/AddBox';
 import Typography from '@material-ui/core/Typography';
 import NavBar from  './NavBar';
 import DashboardPlants from './DashboardPlants';
+import Spinner from './Spinner';
 
 const BASE_URL = process.env.REACT_APP_AWS_GATEWAY_URL;
 const USER_PLANTS_URL = new URL(`${BASE_URL}/plants`);
@@ -24,11 +22,6 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
     marginRight: theme.spacing(2),
   },
-  addPlant: {
-    display: 'flex',
-    flexDirection: 'column',
-    marginRight: theme.spacing(2),
-  }
 }));
 
 const validToken = (token, expDateString) => {
@@ -51,7 +44,6 @@ const validToken = (token, expDateString) => {
 
 const Dashboard = () => {
   const { authState, authService } = useOktaAuth();
-  const history = useHistory();
   const classes = useStyles();
 
   const [userInfo, setUserInfo] = useState(null);
@@ -130,7 +122,10 @@ const Dashboard = () => {
       Promise.all(fetch_promises).then(results => setPlantData(results));
     }
   }, [userPlants]);
-  // Plus icon text align right to replace standard add plant button
+
+  if (authState.isPending) {
+    return <Spinner />;
+  }
 
   return (
     <div>
@@ -141,16 +136,6 @@ const Dashboard = () => {
             {userInfo &&
               <Typography variant="caption">Welcome, {userInfo.name}!</Typography>
             }
-          </Grid>
-        </Grid>
-        <Grid container spacing={4} justify="flex-end">
-          <Grid item className={classes.addPlant}>
-            <Button
-              className={classes.button}
-              onClick={()=> history.push("/search")}
-            >
-              <AddBoxIcon color="inherit" />
-            </Button>
           </Grid>
         </Grid>
       </div>
