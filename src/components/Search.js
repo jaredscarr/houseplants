@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import NavBar from './NavBar';
 import PlantList from './PlantList';
+import Spinner from './Spinner';
 
 const TREFLE_BASE_URL = process.env.REACT_APP_BASE_URL
 
@@ -108,7 +109,7 @@ const Search = () => {
       </div>
     </div>
     :
-    <h1>Loading</h1>
+    <Spinner />
 }
 
 export default Search;
