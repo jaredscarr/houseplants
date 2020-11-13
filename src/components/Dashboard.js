@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useOktaAuth } from '@okta/okta-react';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import Typography from '@material-ui/core/Typography';
@@ -17,8 +17,18 @@ const TREFLE_API_BASE_URL = process.env.REACT_APP_BASE_URL;
 const useStyles = makeStyles((theme) => ({
   root: {
     color: theme.palette.text.primary,
-    alignItems: 'right',
   },
+  welcome: {
+    display: 'flex',
+    flexDirection: 'column',
+    marginTop: theme.spacing(2),
+    marginRight: theme.spacing(2),
+  },
+  addPlant: {
+    display: 'flex',
+    flexDirection: 'column',
+    marginRight: theme.spacing(2),
+  }
 }));
 
 const validToken = (token, expDateString) => {
@@ -125,17 +135,25 @@ const Dashboard = () => {
   return (
     <div>
       <NavBar />
-      <Container maxWidth="sm" className={classes.root}>
-        {userInfo &&
-          <Typography variant="caption">Welcome, {userInfo.name}!</Typography>
-        }
-        <Button
-          className={classes.button}
-          onClick={()=> history.push("/search")}
-        >
-          <AddBoxIcon color="inherit" />
-        </Button>
-      </Container>
+      <div className={classes.root}>
+        <Grid container spacing={4} justify="flex-end">
+          <Grid item className={classes.welcome}>
+            {userInfo &&
+              <Typography variant="caption">Welcome, {userInfo.name}!</Typography>
+            }
+          </Grid>
+        </Grid>
+        <Grid container spacing={4} justify="flex-end">
+          <Grid item className={classes.addPlant}>
+            <Button
+              className={classes.button}
+              onClick={()=> history.push("/search")}
+            >
+              <AddBoxIcon color="inherit" />
+            </Button>
+          </Grid>
+        </Grid>
+      </div>
       <DashboardPlants plants={plantData} />
     </div>
   );

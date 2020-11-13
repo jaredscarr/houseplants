@@ -73,7 +73,7 @@ const Search = () => {
       <NavBar />
         <div className={classes.paper}>
           <form onSubmit={handleSearch}>
-            <div className={classes.heroButtons}>
+            <div>
               <Grid container spacing={2} justify="center">
                 <Grid item>
                   <TextField
