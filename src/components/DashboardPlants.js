@@ -42,14 +42,9 @@ const DashboardPlants = ({ plants }) => {
           justify="flex-end"
           alignItems="center"
         >
-          {plants.length === 0 && 
-          <Grid item >
-            <Typography variant="body1">Add some plants!</Typography>
-          </Grid>
-          }
           <Grid item >
             <Button onClick={()=> history.push("/search")}>
-              <AddBoxIcon color="secondary" />
+              <AddBoxIcon />
             </Button>
           </Grid>
         </Grid>
