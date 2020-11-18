@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useOktaAuth } from '@okta/okta-react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -8,7 +8,7 @@ import NavBar from './NavBar';
 import PlantList from './PlantList';
 import Spinner from './Spinner';
 
-const TREFLE_BASE_URL = process.env.REACT_APP_BASE_URL
+const TREFLE_BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -31,19 +31,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Search = () => {
-  const { authState, authService } = useOktaAuth();
+  const { authState } = useOktaAuth();
   const [results, setResults] = useState([]);
-  const [userInfo, setUserInfo] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const classes = useStyles();
-
-  useEffect(() => {
-    if (!authState.isAuthenticated) {
-      setUserInfo(null);
-    } else {
-      authService.getUser().then(info => setUserInfo(info))
-    }
-  }, [authService, authState]);
 
   const handleChange = (event) => {
     setSearchQuery(event.target.value);
@@ -69,7 +60,7 @@ const Search = () => {
     .then(response => setResults(response.data));
   };
 
-  return userInfo ?
+  return authState.isAuthenticated ?
     <div>
       <NavBar />
         <div className={classes.paper}>
@@ -87,10 +78,12 @@ const Search = () => {
                     value={searchQuery}
                     onChange={handleChange}
                     placeholder="Search"
+                    inputProps={ {"data-testid": "search-input"} }
                   />
                 </Grid>
                 <Grid item>
                   <Button
+                    data-testid="search-button"
                     type="submit"
                     fullWidth
                     variant="contained"
