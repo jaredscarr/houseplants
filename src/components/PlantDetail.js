@@ -9,6 +9,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Button from '@material-ui/core/Button';
 import NavBar from './NavBar';
+import Spinner from './Spinner';
 
 const BASE_URL = process.env.REACT_APP_AWS_GATEWAY_URL;
 const USER_PLANTS_URL = new URL(`${BASE_URL}/plants`);
@@ -24,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
       theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
     backgroundSize: 'cover',
     backgroundPosition: 'center',
+    height: '100vh',
   },
   paper: {
     margin: theme.spacing(8, 4),
@@ -32,8 +34,11 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'left',
     justify: 'flex-start',
   },
-  buttons: {
+  buttonContainer: {
     marginTop: theme.spacing(4),
+  },
+  buttons: {
+    marginRight: theme.spacing(4),
   },
 }));
 
@@ -47,7 +52,7 @@ const PlantDetail = (props) => {
 
   useEffect(() => {
     if (authState.isPending) {
-      return <div>Loading...</div>;
+      return <Spinner />;
     } else if (!authState.isAuthenticated) {
       setUserInfo(null);
     } else {
@@ -87,10 +92,25 @@ const PlantDetail = (props) => {
     history.push('/dashboard');
   }
 
+  const handleReturnToDashboard = () => {
+    history.push('/dashboard');
+  }
+
+  const handleReturnToSearch = () => {
+    history.push('/search');
+  }
+
   const ActionButton = (button) => {
     return (button.button === 'Remove' ?
-      <Button variant="contained" onClick={() => handleRemove(plant)}>Remove</Button> :
-      <Button variant="contained" onClick={() => handleAddition(plant)}>Add</Button>
+      <Button className={classes.buttons} variant="contained" onClick={() => handleRemove(plant)}>Remove</Button> :
+      <Button className={classes.buttons} variant="contained" onClick={() => handleAddition(plant)}>Add</Button>
+    );
+  }
+
+  const BackButton = (button) => {
+    return (button.button === 'Remove' ?
+      <Button className={classes.buttons} variant="contained" onClick={() => handleReturnToDashboard()}>Back</Button> :
+      <Button className={classes.buttons} variant="contained" onClick={() => handleReturnToSearch()}>Back</Button>
     );
   }
   
@@ -98,7 +118,7 @@ const PlantDetail = (props) => {
     <div className="plantDetail">
       <NavBar />
       <Grid container component="main" className={classes.root}>
-        <Grid item xs={false} sm={4} md={7} className={classes.image} style={{ backgroundImage: `url(${plant.image_url})` }}/>
+        <Grid item xs={12} sm={4} md={7} className={classes.image} style={{ backgroundImage: `url(${plant.image_url})` }}/>
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <div className={classes.paper}>
             <List>
@@ -127,8 +147,13 @@ const PlantDetail = (props) => {
                 />
               </ListItem>
             </List>
-            <Grid container justify="flex-end" className={classes.buttons} >
-              <ActionButton button={button} />
+            <Grid container justify="flex-end" className={classes.buttonContainer} >
+              <Grid item>
+                <BackButton button={button} />
+              </Grid>
+              <Grid item>
+                <ActionButton button={button} />
+              </Grid>
             </Grid>
           </div>
         </Grid>

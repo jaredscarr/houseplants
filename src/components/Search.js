@@ -12,7 +12,8 @@ const TREFLE_BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(25),
+    marginBottom: theme.spacing(30),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
