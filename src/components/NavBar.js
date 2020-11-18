@@ -10,6 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import Spinner from './Spinner';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,12 +39,12 @@ const NavBar = () => {
   };
 
   if (authState.isPending) {
-    return <div>Loading...</div>;
+    return <Spinner />;
   }
 
   const button = authState.isAuthenticated ?
-    <Button color="inherit" onClick={() => {authService.logout()}}>Logout</Button> :
-    <Button color="inherit" onClick={() => {history.push('/login')}}>Login/Signup</Button>;
+    <Button data-testid="logout-button" color="inherit" onClick={() => {authService.logout()}}>Logout</Button> :
+    <Button data-testid="login-button" color="inherit" onClick={() => {history.push('/login')}}>Login/Signup</Button>;
 
   return (
     <div className={classes.root}>
@@ -51,6 +52,7 @@ const NavBar = () => {
         <Toolbar>
           { authState.isAuthenticated &&
           <IconButton
+            data-testid="simple-menu"
             edge="start"
             className={classes.menuButton}
             color="inherit"

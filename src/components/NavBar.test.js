@@ -1,6 +1,6 @@
 import React from 'react';
-import { render, unmountComponentAtNode } from 'react-dom';
-import { act } from 'react-dom/test-utils';
+import {cleanup, render} from '@testing-library/react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import NavBar from './NavBar';
 
 jest.mock('@okta/okta-react', () => ({
@@ -10,34 +10,51 @@ jest.mock('@okta/okta-react', () => ({
       },
       authService: {
         handleAuthentication: jest.fn(),
-        getUser: jest.fn().mockImplementation(() => Promise.resolve('1'))
+        getUser: jest.fn().mockImplementation(() => Promise.resolve(
+          {
+            "sub": "00uid4BxXw6I6TV4m0g3",
+            "name": "John Doe",
+            "nickname": "Jimmy",
+            "given_name": "John",
+            "middle_name": "James",
+            "family_name": "Doe",
+            "profile": "https://example.com/john.doe",
+            "zoneinfo": "America/Los_Angeles",
+            "locale": "en-US",
+            "updated_at": 1311280970,
+            "email": "john.doe@example.com",
+            "email_verified": true,
+            "address": {
+              "street_address": "123 Hollywood Blvd.",
+              "locality": "Los Angeles",
+              "region": "CA",
+              "postal_code": "90210",
+              "country": "US"
+            },
+            "phone_number": "+1 (xxx) xxx-xxxx"
+          }
+        ))
       }
     })
   })
 );
 
-let container = null;
+afterEach(cleanup);
 
-beforeEach(() => {
-  // setup a DOM element as a render target
-  container = document.createElement("div");
-  document.body.appendChild(container);
+it('Authenticated view renders logout button', () => {
+  const { getByTestId } = render(
+    <Router><NavBar /></Router>,
+  );
+  // this will error if the button is not rendered because it will not find it
+  // Signaling that the login button is in fact being rendered
+  expect(getByTestId('logout-button')).toBeTruthy();
+
 });
 
-afterEach(() => {
-  // cleanup on exiting
-  unmountComponentAtNode(container);
-  container.remove();
-  container = null;
-});
-
-it("Shows logout button if authenticated", async () => {
-
-  // Use the asynchronous version of act to apply resolved promises
-  await act(async () => {
-    render(<NavBar id="123" />, container);
-  });
-
-  expect(container.textContent).toContain("Logout");
-
+it('Authenticated view renders menu', () => {
+  const { getByTestId } = render(
+    <Router><NavBar /></Router>,
+  );
+  
+  expect(getByTestId('simple-menu')).toBeTruthy();
 });
