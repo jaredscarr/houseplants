@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import NavBar from  './NavBar';
 import DashboardPlants from './DashboardPlants';
 import Spinner from './Spinner';
+import Footer from './Footer';
 
 const BASE_URL = process.env.REACT_APP_AWS_GATEWAY_URL;
 const USER_PLANTS_URL = new URL(`${BASE_URL}/plants`);
@@ -140,6 +141,7 @@ const Dashboard = () => {
         </Grid>
       </div>
       <DashboardPlants plants={plantData} />
+      <Footer />
     </div>
   );
 }

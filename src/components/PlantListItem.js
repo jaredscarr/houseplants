@@ -17,6 +17,8 @@ const PlantListItem = ({ plant, button }) => {
   const classes = useStyles();
   const main_species = plant.data ? plant.data.main_species : plant;
 
+  const image = main_species.image_url !== null ? main_species.image_url : '/palm_light.png';
+
   return (main_species.common_name ? 
     <div className={classes.demo}>
       <List dense={true}>
@@ -32,7 +34,7 @@ const PlantListItem = ({ plant, button }) => {
           }
         }>
           <ListItemAvatar>
-            <Avatar alt={main_species.common_name} src={main_species.image_url} />
+            <Avatar alt={main_species.common_name} src={image} />
           </ListItemAvatar>
           <ListItemText
             primary={main_species.common_name}

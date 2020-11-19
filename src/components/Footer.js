@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
-    marginTop: 'calc(5% + 70vh)',
+    // marginTop: 'calc(5% + 70vh)',
     bottom: 0,
   },
   footer: {

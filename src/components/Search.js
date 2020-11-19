@@ -7,6 +7,7 @@ import TextField from '@material-ui/core/TextField';
 import NavBar from './NavBar';
 import PlantList from './PlantList';
 import Spinner from './Spinner';
+import Footer from './Footer';
 
 const TREFLE_BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -101,6 +102,7 @@ const Search = () => {
           </form>
         <PlantList list={results} button="Add"/>
       </div>
+      <Footer />
     </div>
     :
     <Spinner />
