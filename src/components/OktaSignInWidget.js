@@ -22,6 +22,8 @@ const Login = () => {
       baseUrl: OKTA_DOMAIN,
       clientId: CLIENT_ID,
       redirectUri: REDIRECT_URI,
+      logo: '/palm_light.png',
+      logoText: 'House Plants',
       i18n: {
         en: {
           'primaryauth.title': 'Sign in to House Plants',

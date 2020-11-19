@@ -10,6 +10,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Button from '@material-ui/core/Button';
 import NavBar from './NavBar';
 import Spinner from './Spinner';
+import Footer from './Footer';
 
 const BASE_URL = process.env.REACT_APP_AWS_GATEWAY_URL;
 const USER_PLANTS_URL = new URL(`${BASE_URL}/plants`);
@@ -19,7 +20,6 @@ const useStyles = makeStyles((theme) => ({
     height: '100vh',
   },
   image: {
-    backgroundImage: 'url(https://source.unsplash.com/random)',
     backgroundRepeat: 'no-repeat',
     backgroundColor:
       theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
@@ -113,12 +113,14 @@ const PlantDetail = (props) => {
       <Button className={classes.buttons} variant="contained" onClick={() => handleReturnToSearch()}>Back</Button>
     );
   }
+
+  const image = plant.image_url !== null ? plant.image_url : '/palm_dark.png';
   
   return (
     <div className="plantDetail">
       <NavBar />
       <Grid container component="main" className={classes.root}>
-        <Grid item xs={12} sm={4} md={7} className={classes.image} style={{ backgroundImage: `url(${plant.image_url})` }}/>
+        <Grid item xs={12} sm={4} md={7} className={classes.image} style={{ backgroundImage: `url(${image})` }}/>
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <div className={classes.paper}>
             <List>
@@ -156,6 +158,11 @@ const PlantDetail = (props) => {
               </Grid>
             </Grid>
           </div>
+        </Grid>
+        <Grid>
+          <Grid item>
+            <Footer />
+          </Grid>
         </Grid>
       </Grid>
     </div>

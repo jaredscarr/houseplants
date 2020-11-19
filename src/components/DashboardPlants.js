@@ -65,7 +65,7 @@ const DashboardPlants = ({ plants }) => {
                 >
                   <CardMedia
                     component="img"
-                    src={plant.data.main_species.image_url}
+                    src={plant.data.main_species.image_url !== null ? plant.data.main_species.image_url : '/palm_dark.png'}
                     title={plant.data.main_species.common_name}
                     height="140"
                   />
